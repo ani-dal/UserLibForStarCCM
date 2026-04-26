@@ -83,7 +83,7 @@ After loading, two new field functions appear in the field function list:
 
 | Field Function Name  | Description                                       |
 |----------------------|---------------------------------------------------|
-| `custom_dampers_custom`      | Damps destruction term in ε-equation near wall    |
+| `f2_AKN_custom`      | Damps destruction term in ε-equation near wall    |
 | `fmu_AKN_custom`     | Damps turbulent viscosity νt = Cμ·fmu·k²/ε       |
 
 ---
@@ -93,8 +93,8 @@ After loading, two new field functions appear in the field function list:
 **Option A — Visualise and validate (recommended first step):**
 
 1. Create a new Scalar Scene
-2. Set scalar to `custom_dampers_custom`
-3. Create an XY Plot: Wall Distance on Y-axis, `custom_dampers_custom` on X-axis
+2. Set scalar to `custom_dampers`
+3. Create an XY Plot: Wall Distance on Y-axis, `custom_dampers` on X-axis
 4. Compare the profile against DNS data
 
 **Option B — Apply as source term to the ε-equation:**
@@ -103,26 +103,23 @@ After loading, two new field functions appear in the field function list:
 Physics Continuum → Models → K-Epsilon → Source Terms → Add User Source
 ```
 
-Use `custom_dampers_custom` to correct the C_eps2 destruction term:
+Use `custom_dampers` to correct the C_eps2 destruction term:
 ```
-($$custom_dampers_custom - f2_builtin) * C_eps2
+($$custom_dampers - f2_builtin) * C_eps2
 * $TurbulentDissipationRate^2 / $TurbulentKineticEnergy * $Volume
 ```
 
 ---
 
-## Step 5 — Replace with your PySR equation
+## Step 5 — Replace with PySR equation
 
-Once PySR has been run on the DNS data (Re=5200), find the TODO comment
-in `src/custom_dampers.cpp` and replace the standard AKN formula:
 
 ```cpp
 // Current standard AKN formula — REPLACE THIS:
 double f2 = pow((1.0 - exp(-ystar / 3.1)), 2)
           * (1.0 - 0.3 * exp(-pow(Rt / 6.5, 2.0)));
 
-// With your PySR output, for example:
-double f2 = <your_pysr_expression_using_ystar_and_Rt>;
+double f2 = <pysr_expression>;
 ```
 
 Available variables inside the loop:
