@@ -1,0 +1,13 @@
+# Compiled library
+*.so
+*.o
+*.a
+
+# Build artifacts
+build/
+
+# Editor files
+.vscode/
+*.swp
+*~
+EOF
