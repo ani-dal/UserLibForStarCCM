@@ -13,40 +13,17 @@ once it has been derived from DNS data.
 
 ```
 custom_dampers_lib/
-├── Makefile            ← build system (edit paths at top if needed)
-├── README.md           ← this file
+├── Makefile
+├── README.md
 ├── include/
-│   └── uclib.h         ← STAR-CCM+ user library header (do not modify)
+│   └── uclib.h
 └── src/
-    └── custom_dampers.cpp      ← f2 and fmu implementations (edit for PySR equation)
+    └── custom_dampers.cpp
 ```
 
 ---
 
-## Known bug to fix before compiling
 
-In `src/custom_dampers.cpp` the `clamp()` helper is missing a `return x` statement.
-Fix it before running `make`:
-
-```cpp
-// WRONG — undefined behaviour when lo <= x <= hi
-static inline double clamp(double x, double lo, double hi)
-{
-    if (x < lo) return lo;
-    if (x > hi) return hi;
-    // falls off the end — undefined behaviour!
-}
-
-// CORRECT — add the missing return
-static inline double clamp(double x, double lo, double hi)
-{
-    if (x < lo) return lo;
-    if (x > hi) return hi;
-    return x;
-}
-```
-
----
 
 ## Step 1 — Verify paths before building
 
